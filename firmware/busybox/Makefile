@@ -2,7 +2,7 @@ TARBALL = busybox-1.25.0.tar.bz2
 BUSYBOX_DIR = $(TARBALL:.tar.bz2=)
 INSTALL_DIR = $(ROOTFS_DIR)
 
-all: build install
+all: build
 
 extract: $(TARBALL)
 	tar xjf $^	
@@ -13,11 +13,8 @@ config: extract $(BUSYBOX_DIR)
 build: config
 	$(MAKE) -C $(BUSYBOX_DIR) -j$(MAKE_JOBS)
 
-install:
+rootfs_install:
 	$(MAKE) -C $(BUSYBOX_DIR) CONFIG_PREFIX=$(INSTALL_DIR) install
 
 clean:
 	[ ! -d $(BUSYBOX_DIR) ] || rm -rf $(BUSYBOX_DIR)
-
-test:
-	echo "INSTALL_DIR=$(INSTALL_DIR)"
